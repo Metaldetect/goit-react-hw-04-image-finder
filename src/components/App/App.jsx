@@ -19,8 +19,7 @@ function App() {
 
   useEffect(() => {
     fetchImages();
-    // eslint-disable-next-line no-lone-blocks
-  }, [page, query]);
+  }, [fetchImages]);
 
   const handleSearchSubmit = newQuery => {
     if (query === newQuery) {
