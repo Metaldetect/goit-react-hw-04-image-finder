@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     fetchImages();
-  }, [fetchImages]);
+  }, [page, query]);
 
   const handleSearchSubmit = newQuery => {
     if (query === newQuery) {
