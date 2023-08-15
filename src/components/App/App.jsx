@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppContainer } from './AppStyles';
 import getProducts from '../../Api/Api';
 import Searchbar from '../Searchbar/Searchbar';
@@ -20,38 +20,39 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
 
-  const fetchImages = useCallback(async () => {
-    setIsLoading(true);
+  useEffect(() => {
+    async function fetchImages() {
+      if (!query) return;
 
-    try {
-      const {
-        images: fetchedImages,
-        message,
-        isLastPage,
-      } = await getProducts(query, page);
+      setIsLoading(true);
 
-      setImages(prevImages => [...prevImages, ...fetchedImages]);
+      try {
+        const {
+          images: fetchedImages,
+          message,
+          isLastPage,
+        } = await getProducts(query, page);
 
-      if (message) {
-        setError(message);
-        toast.error(message);
-      } else {
-        setError(null);
+        setImages(prevImages => [...prevImages, ...fetchedImages]);
+
+        if (message) {
+          setError(message);
+          toast.error(message);
+        } else {
+          setError(null);
+        }
+
+        setIsLastPage(isLastPage);
+      } catch (error) {
+        setError('An error occurred. Please try again.');
+        toast.error('An error occurred. Please try again.');
       }
 
-      setIsLastPage(isLastPage);
-    } catch (error) {
-      setError('An error occurred. Please try again.');
-      toast.error('An error occurred. Please try again.');
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  }, [query, page]);
 
-  useEffect(() => {
-    if (query && page > 0) {
-      fetchImages();
-    }
-  }, [query, page, fetchImages]);
+    fetchImages();
+  }, [query, page]);
 
   const handleSearchSubmit = newQuery => {
     if (query === newQuery) {
