@@ -22,7 +22,9 @@ function App() {
 
   useEffect(() => {
     async function fetchImages() {
-      if (!query) return;
+      if (!query) {
+        return;
+      }
 
       setIsLoading(true);
 
