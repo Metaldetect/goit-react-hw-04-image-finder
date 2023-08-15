@@ -51,7 +51,7 @@ function App() {
     if (query && page > 0) {
       fetchImages();
     }
-  }, [query, page]);
+  }, [query, page, fetchImages]);
 
   const handleSearchSubmit = newQuery => {
     if (query === newQuery) {
